@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
-    private List<Restaurant> mRestaurantList;
+    private static List<Restaurant> mRestaurantList;
 
     public RestaurantAdapter(List<Restaurant> restaurantList) {
         mRestaurantList = restaurantList;
@@ -32,15 +32,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = mRestaurantList.get(position);
         holder.restaurantNameTextView.setText(restaurant.getName());
         holder.restaurantTypeTextView.setText(restaurant.getType());
-        holder.restaurantAddressTextView.setText(restaurant.getStreet());
-        holder.restaurantCityTextView.setText(restaurant.getCity());
+        holder.restaurantAddressTextView.setText(restaurant.getNumber() + " " + restaurant.getStreet());
+        holder.restaurantCityTextView.setText(restaurant.getPostalCode() + " " + restaurant.getCity());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // log the name of the restaurant
-                Log.d("Restaurant", "Clicked restaurant: " + restaurant.getName());
-            }
+        holder.itemView.setOnClickListener(v -> {
+            // log the name of the restaurant
+            Log.d("Restaurant", "Clicked restaurant: " + restaurant.getName());
         });
     }
 
@@ -49,11 +46,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         return mRestaurantList.size();
     }
 
-    public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
+    public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         private TextView restaurantNameTextView;
         private TextView restaurantTypeTextView;
         private TextView restaurantAddressTextView;
         private TextView restaurantCityTextView;
+        private ImageView deleteIconImageView;
 
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +60,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             restaurantTypeTextView = itemView.findViewById(R.id.restaurant_type);
             restaurantAddressTextView = itemView.findViewById(R.id.restaurant_address);
             restaurantCityTextView = itemView.findViewById(R.id.restaurant_city);
+            deleteIconImageView = itemView.findViewById(R.id.delete_icon);
+            deleteIconImageView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    mRestaurantList.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
         }
     }
 }
