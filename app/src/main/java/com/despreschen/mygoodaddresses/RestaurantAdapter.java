@@ -1,6 +1,6 @@
 package com.despreschen.mygoodaddresses;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,55 +14,55 @@ import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
-    private Context context;
-    private List<Restaurant> restaurantList;
+    private List<Restaurant> mRestaurantList;
 
-    public RestaurantAdapter(Context context, List<Restaurant> restaurantList) {
-        this.context = context;
-        this.restaurantList = restaurantList;
+    public RestaurantAdapter(List<Restaurant> restaurantList) {
+        mRestaurantList = restaurantList;
     }
 
     @NonNull
     @Override
     public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.restaurant_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_card, parent, false);
         return new RestaurantViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
-        Restaurant restaurant = restaurantList.get(position);
+        Restaurant restaurant = mRestaurantList.get(position);
+        holder.restaurantNameTextView.setText(restaurant.getName());
+        holder.restaurantTypeTextView.setText(restaurant.getType());
+        holder.restaurantAddressTextView.setText(restaurant.getStreet());
+        holder.restaurantCityTextView.setText(restaurant.getCity());
 
-        holder.nameTextView.setText(restaurant.getName());
-        holder.typeTextView.setText(restaurant.getType());
-        holder.addressTextView.setText(restaurant.getNumber() + " " + restaurant.getStreet());
-        holder.cityTextView.setText(restaurant.getPostalCode() + " " + restaurant.getCity());
-        holder.imageView.setImageResource(restaurant.getImageResourceId());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // log the name of the restaurant
+                Log.d("Restaurant", "Clicked restaurant: " + restaurant.getName());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return restaurantList.size();
+        return mRestaurantList.size();
     }
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView;
-
-        TextView typeTextView;
-        TextView addressTextView;
-        TextView cityTextView;
-        ImageView imageView;
+        private TextView restaurantNameTextView;
+        private TextView restaurantTypeTextView;
+        private TextView restaurantAddressTextView;
+        private TextView restaurantCityTextView;
 
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.restaurant_name);
-            typeTextView = itemView.findViewById(R.id.restaurant_type);
-            addressTextView = itemView.findViewById(R.id.restaurant_address);
-            cityTextView = itemView.findViewById(R.id.restaurant_city);
-            imageView = itemView.findViewById(R.id.restaurant_image);
+
+            restaurantNameTextView = itemView.findViewById(R.id.restaurant_name);
+            restaurantTypeTextView = itemView.findViewById(R.id.restaurant_type);
+            restaurantAddressTextView = itemView.findViewById(R.id.restaurant_address);
+            restaurantCityTextView = itemView.findViewById(R.id.restaurant_city);
         }
-
-
     }
 }
 
