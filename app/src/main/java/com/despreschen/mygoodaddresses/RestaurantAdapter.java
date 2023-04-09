@@ -1,5 +1,9 @@
 package com.despreschen.mygoodaddresses;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +19,11 @@ import java.util.List;
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     private static List<Restaurant> mRestaurantList;
+    private static Context mContext;
 
-    public RestaurantAdapter(List<Restaurant> restaurantList) {
+    public RestaurantAdapter(Context ctx, List<Restaurant> restaurantList) {
         mRestaurantList = restaurantList;
+        mContext = ctx;
     }
 
     @NonNull
@@ -38,6 +44,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.itemView.setOnClickListener(v -> {
             // log the name of the restaurant
             Log.d("Restaurant", "Clicked restaurant: " + restaurant.getName());
+            Intent i = new Intent(mContext, RestaurantLocationActivity.class);
+            i.putExtra("name", restaurant.getName());
+            i.putExtra("address",
+                    restaurant.getNumber() + " " + restaurant.getStreet() + " " + restaurant.getPostalCode() + " " + restaurant.getCity());
+            mContext.startActivity(i);
         });
     }
 

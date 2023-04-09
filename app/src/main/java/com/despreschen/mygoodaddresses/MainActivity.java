@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
         restaurantList.add(new Restaurant("Au bon couscous", "Italienne",
                 6, "avenue Rapp", "75007", "Paris", R.drawable.ic_restaurant_plate));
         RecyclerView recyclerView = findViewById(R.id.restaurant_list);
-        RestaurantAdapter adapter = new RestaurantAdapter(restaurantList);
+        RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
