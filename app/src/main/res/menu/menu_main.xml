@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.despreschen.mygoodaddresses.MainActivity">
+    <item
+        android:id="@+id/last_operation_and_url"
+        android:orderInCategory="100"
+        android:title="Add restaurant"
+        app:showAsAction="never" />
+</menu>
