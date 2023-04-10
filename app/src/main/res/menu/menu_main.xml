@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.despreschen.mygoodaddresses.MainActivity">
     <item
-        android:id="@+id/last_operation_and_url"
+        android:id="@+id/add_restaurant_item"
         android:orderInCategory="100"
-        android:title="Add restaurant"
+        android:title="@string/add_restaurant"
         app:showAsAction="never" />
 </menu>

@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">MyGoodAddresses</string>
+    <string name="app_name" translatable="false">MyGoodAddresses</string>
+    <string name="add_restaurant">Add restaurant</string>
+    <string name="name">Name</string>
+    <string name="type">Type/origin</string>
+    <string name="number">Number</string>
+    <string name="street">Street name</string>
+    <string name="post_code">Post code</string>
+    <string name="city">City</string>
+    <string name="welcome">Welcome!</string>
+    <string name="app_description">This application allows you to create a list of your favorite restaurants and to view them on a map. You can add a picture for each address and use GPS to add a restaurant at your location.</string>
+    <string name="close">Close</string>
 </resources>

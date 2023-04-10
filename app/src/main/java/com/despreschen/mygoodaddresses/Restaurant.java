@@ -3,13 +3,13 @@ package com.despreschen.mygoodaddresses;
 public class Restaurant {
     private String name;
     private String type;
-    private int number;
+    private String number;
     private String street;
     private String postalCode;
     private String city;
     private int imageResourceId;
 
-    public Restaurant(String name, String type, int number, String street, String postalCode, String city, int imageResourceId) {
+    public Restaurant(String name, String type, String number, String street, String postalCode, String city, int imageResourceId) {
         this.name = name;
         this.type = type;
         this.number = number;
@@ -35,11 +35,11 @@ public class Restaurant {
         this.type = type;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
