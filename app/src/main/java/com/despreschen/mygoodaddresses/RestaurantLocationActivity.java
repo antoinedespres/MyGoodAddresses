@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,18 +24,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
-import com.despreschen.mygoodaddresses.databinding.ActivityMapsBinding;
+import com.despreschen.mygoodaddresses.databinding.ActivityRestaurantLocationBinding;
 public class RestaurantLocationActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private LatLng mLatLng;
-    private ActivityMapsBinding binding;
+    private String address;
+    private String name;
+    private ActivityRestaurantLocationBinding binding;
     private LocationManager lm;
+    public static final int ZOOM_LEVEL = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMapsBinding.inflate(getLayoutInflater());
+        binding = ActivityRestaurantLocationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -42,11 +46,9 @@ public class RestaurantLocationActivity extends FragmentActivity implements OnMa
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        setContentView(R.layout.activity_restaurant_location);
-
         Intent intent = getIntent();
-        String address = intent.getStringExtra("address");
-
+        this.address = intent.getStringExtra("address");
+        this.name = intent.getStringExtra("name");
         // Use Geocoder to convert address to latitude and longitude
         Geocoder geocoder = new Geocoder(this);
         List<Address> addresses;
@@ -67,8 +69,8 @@ public class RestaurantLocationActivity extends FragmentActivity implements OnMa
         mMap = googleMap;
 
         // Add a marker on the map and move the camera
-        mMap.addMarker(new MarkerOptions().position(mLatLng).title("Title"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 15));
+        mMap.addMarker(new MarkerOptions().position(mLatLng).title(name));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, ZOOM_LEVEL));
     }
 
     @Override
