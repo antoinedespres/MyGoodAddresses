@@ -7,13 +7,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import com.despreschen.mygoodaddresses.databinding.ActivityRestaurantLocationBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,8 +21,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
-
-import com.despreschen.mygoodaddresses.databinding.ActivityRestaurantLocationBinding;
 public class RestaurantLocationActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
@@ -32,7 +28,6 @@ public class RestaurantLocationActivity extends FragmentActivity implements OnMa
     private String address;
     private String name;
     private ActivityRestaurantLocationBinding binding;
-    private LocationManager lm;
     public static final int ZOOM_LEVEL = 15;
 
     @Override

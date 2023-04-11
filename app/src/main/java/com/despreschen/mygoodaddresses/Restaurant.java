@@ -1,6 +1,8 @@
 package com.despreschen.mygoodaddresses;
 
 public class Restaurant {
+
+    private int id;
     private String name;
     private String type;
     private String number;
@@ -10,6 +12,7 @@ public class Restaurant {
     private int imageResourceId;
 
     public Restaurant(String name, String type, String number, String street, String postalCode, String city, int imageResourceId) {
+        this.id = 1;
         this.name = name;
         this.type = type;
         this.number = number;
@@ -17,6 +20,16 @@ public class Restaurant {
         this.postalCode = postalCode;
         this.city = city;
         this.imageResourceId = imageResourceId;
+    }
+
+    public Restaurant(int id, String name, String type, String number, String street, String postalCode, String city) {
+        this.name = name;
+        this.type = type;
+        this.number = number;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.imageResourceId = R.drawable.ic_restaurant_plate;
     }
 
     public String getName() {

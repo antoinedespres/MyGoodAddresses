@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,22 +14,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity{
 
-    private List<Restaurant> restaurantList = new ArrayList<>();
+    private static List<Restaurant> restaurantList = new ArrayList<>();
+    private static String PASS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        restaurantList.add(new Restaurant("Trattoria dell'Angelo", "Italienne",
+        /*restaurantList.add(new Restaurant("Trattoria dell'Angelo", "Italienne",
                 "6", "avenue Rapp", "75007", "Paris", R.drawable.ic_restaurant_plate));
         restaurantList.add(new Restaurant("Au bon couscous", "Marocaine",
-                "7", "rue Xavier Privas", "75005", "Paris", R.drawable.ic_restaurant_plate));
+                "7", "rue Xavier Privas", "75005", "Paris", R.drawable.ic_restaurant_plate));*/
+
+        // Read the config file
+        InputStream inputStream = getResources().openRawResource(R.raw.config);
+
+        Properties properties = new Properties();
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PASS = properties.getProperty("database_password");
+
+
+        RestaurantAsyncTask task = new RestaurantAsyncTask();
+        task.execute();
+
+
         RecyclerView recyclerView = findViewById(R.id.restaurant_list);
         RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantList);
         recyclerView.setAdapter(adapter);
@@ -66,5 +94,63 @@ public class MainActivity extends AppCompatActivity{
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static void getRestaurantsFromDatabase() {
+
+        // Connect to database and retrieve data
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = java.sql.DriverManager.getConnection(DbCreds.DB_URL, DbCreds.USER, PASS);
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM " + DbCreds.TABLE_NAME;
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                Log.d("resto", name);
+                String type = rs.getString("type");
+                String number = rs.getString("number");
+                String address = rs.getString("address");
+                String postCode = rs.getString("postcode");
+                String city = rs.getString("city");
+                Restaurant restaurant = new Restaurant(id, name, type, number, address, postCode, city);
+                restaurantList.add(restaurant);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null)
+                    stmt.close();
+            } catch (SQLException se2) {
+            }
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+    }
+
+    private class RestaurantAsyncTask extends AsyncTask<Void, Void, List<Restaurant>> {
+
+        @Override
+        protected List<Restaurant> doInBackground(Void... voids) {
+            getRestaurantsFromDatabase();
+            return restaurantList;
+        }
+
+        @Override
+        protected void onPostExecute(List<Restaurant> restaurantList) {
+            if (restaurantList != null) {
+                RecyclerView recyclerView = findViewById(R.id.restaurant_list);
+                RestaurantAdapter adapter = new RestaurantAdapter(MainActivity.this, restaurantList);
+                recyclerView.setAdapter(adapter);
+            }
+        }
     }
 }

@@ -1,13 +1,18 @@
 package com.despreschen.mygoodaddresses;
 
+import static com.despreschen.mygoodaddresses.DbCreds.TABLE_NAME;
+
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +27,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Properties;
 
 public class AddRestaurantActivity extends AppCompatActivity {
 
@@ -35,6 +47,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
     private ImageView mImageView;
     private Bitmap mImageBitmap;
+    private static String PASS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +61,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(view -> {
-            saveRestaurant();
+            AddRestaurantAsyncTask task = new AddRestaurantAsyncTask(this);
+            task.execute();
         });
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -65,6 +79,18 @@ public class AddRestaurantActivity extends AppCompatActivity {
             }
         });
 
+
+
+        InputStream inputStream = getResources().openRawResource(R.raw.config);
+
+        Properties properties = new Properties();
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PASS = properties.getProperty("database_password");
     }
 
     private void handlePictureTaking() {
@@ -148,4 +174,54 @@ public class AddRestaurantActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    public void saveRestaurantToDatabase() {
+
+        String name = ((EditText) findViewById(R.id.restaurant_name)).getText().toString();
+        String type = ((EditText) findViewById(R.id.restaurant_type)).getText().toString();
+        String streetNumber = ((EditText) findViewById(R.id.restaurant_street_number)).getText().toString();
+        String streetName = ((EditText) findViewById(R.id.restaurant_street_name)).getText().toString();
+        String postCode = ((EditText) findViewById(R.id.restaurant_post_code)).getText().toString();
+        String city = ((EditText) findViewById(R.id.restaurant_city)).getText().toString();
+
+        // Connect to database and retrieve data
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = java.sql.DriverManager.getConnection(DbCreds.DB_URL, DbCreds.USER, PASS);
+
+            // prepared statement to avoid SQL injection
+            String sql = "INSERT INTO Restaurant (name, type, number, address, postcode, city) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setString(2, type);
+            statement.setString(3, streetNumber);
+            statement.setString(4, streetName);
+            statement.setString(5, postCode);
+            statement.setString(6, city);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new restaurant has been inserted.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+        private class AddRestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
+            private Context context;
+            public AddRestaurantAsyncTask(Context ctx) {
+                this.context = ctx;
+            }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                saveRestaurantToDatabase();
+                return null;
+            }
+        }
 }
