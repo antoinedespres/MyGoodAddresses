@@ -38,19 +38,10 @@
         app:srcCompat="@drawable/baseline_location_on_24"/>
 
     <EditText
-        android:id="@+id/restaurant_street_number"
+        android:id="@+id/restaurant_address_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/use_location_icon"
-        android:hint="@string/number"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
-
-    <EditText
-        android:id="@+id/restaurant_street_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/restaurant_street_number"
         android:hint="@string/street"
         android:padding="16dp"
         android:textColorHint="@color/black" />
@@ -59,7 +50,7 @@
         android:id="@+id/restaurant_post_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/restaurant_street_name"
+        android:layout_below="@id/restaurant_address_line"
         android:hint="@string/post_code"
         android:padding="16dp"
         android:textColorHint="@color/black" />

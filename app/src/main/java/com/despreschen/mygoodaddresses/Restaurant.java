@@ -5,28 +5,25 @@ public class Restaurant {
     private int id;
     private String name;
     private String type;
-    private String number;
-    private String street;
+    private String addressLine;
     private String postalCode;
     private String city;
     private int imageResourceId;
 
-    public Restaurant(String name, String type, String number, String street, String postalCode, String city, int imageResourceId) {
+    public Restaurant(String name, String type, String number, String addressLine, String postalCode, String city, int imageResourceId) {
         this.id = 1;
         this.name = name;
         this.type = type;
-        this.number = number;
-        this.street = street;
+        this.addressLine = addressLine;
         this.postalCode = postalCode;
         this.city = city;
         this.imageResourceId = imageResourceId;
     }
 
-    public Restaurant(int id, String name, String type, String number, String street, String postalCode, String city) {
+    public Restaurant(int id, String name, String type, String addressLine, String postalCode, String city) {
         this.name = name;
         this.type = type;
-        this.number = number;
-        this.street = street;
+        this.addressLine = addressLine;
         this.postalCode = postalCode;
         this.city = city;
         this.imageResourceId = R.drawable.ic_restaurant_plate;
@@ -48,20 +45,12 @@ public class Restaurant {
         this.type = type;
     }
 
-    public String getNumber() {
-        return number;
+    public String getAddressLine() {
+        return addressLine;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
     }
 
     public String getPostalCode() {

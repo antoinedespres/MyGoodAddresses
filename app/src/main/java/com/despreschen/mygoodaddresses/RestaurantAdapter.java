@@ -36,7 +36,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = mRestaurantList.get(position);
         holder.restaurantNameTextView.setText(restaurant.getName());
         holder.restaurantTypeTextView.setText(restaurant.getType());
-        holder.restaurantAddressTextView.setText(restaurant.getNumber() + " " + restaurant.getStreet());
+        holder.restaurantAddressTextView.setText(restaurant.getAddressLine());
         holder.restaurantCityTextView.setText(restaurant.getPostalCode() + " " + restaurant.getCity());
 
         holder.itemView.setOnClickListener(v -> {
@@ -45,7 +45,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             Intent i = new Intent(mContext, RestaurantLocationActivity.class);
             i.putExtra("name", restaurant.getName());
             i.putExtra("address",
-                    restaurant.getNumber() + " " + restaurant.getStreet() + " " + restaurant.getPostalCode() + " " + restaurant.getCity());
+                    restaurant.getAddressLine() + " " + restaurant.getPostalCode() + " " + restaurant.getCity());
             mContext.startActivity(i);
         });
     }

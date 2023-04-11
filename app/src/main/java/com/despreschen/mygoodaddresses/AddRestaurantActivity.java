@@ -1,9 +1,6 @@
 package com.despreschen.mygoodaddresses;
 
-import static com.despreschen.mygoodaddresses.DbCreds.TABLE_NAME;
-
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,7 +9,6 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,9 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
 
@@ -61,7 +55,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(view -> {
-            AddRestaurantAsyncTask task = new AddRestaurantAsyncTask(this);
+            AddRestaurantAsyncTask task = new AddRestaurantAsyncTask();
             task.execute();
         });
 
@@ -110,17 +104,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
         }
     }
 
-    private void saveRestaurant() {
-        String name = ((EditText) findViewById(R.id.restaurant_name)).getText().toString();
-        String type = ((EditText) findViewById(R.id.restaurant_type)).getText().toString();
-        String streetNumber = ((EditText) findViewById(R.id.restaurant_street_number)).getText().toString();
-        String streetName = ((EditText) findViewById(R.id.restaurant_street_name)).getText().toString();
-        String postCode = ((EditText) findViewById(R.id.restaurant_post_code)).getText().toString();
-        String city = ((EditText) findViewById(R.id.restaurant_city)).getText().toString();
-
-        // TODO save restaurant on database
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -154,8 +137,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
     private void fillLocationFields(double latitude, double longitude) {
-        TextView streetNumberTextView = findViewById(R.id.restaurant_street_number);
-        TextView streetNameTextView = findViewById(R.id.restaurant_street_name);
+        TextView addressLineTextView = findViewById(R.id.restaurant_address_line);
         TextView postalCodeTextView = findViewById(R.id.restaurant_post_code);
         TextView cityTextView = findViewById(R.id.restaurant_city);
 
@@ -165,8 +147,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
-                streetNumberTextView.setText(address.getSubThoroughfare());
-                streetNameTextView.setText(address.getThoroughfare());
+                addressLineTextView.setText(address.getSubThoroughfare() + " " + address.getThoroughfare());
                 postalCodeTextView.setText(address.getPostalCode());
                 cityTextView.setText(address.getLocality());
             }
@@ -180,32 +161,26 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         String name = ((EditText) findViewById(R.id.restaurant_name)).getText().toString();
         String type = ((EditText) findViewById(R.id.restaurant_type)).getText().toString();
-        String streetNumber = ((EditText) findViewById(R.id.restaurant_street_number)).getText().toString();
-        String streetName = ((EditText) findViewById(R.id.restaurant_street_name)).getText().toString();
-        String postCode = ((EditText) findViewById(R.id.restaurant_post_code)).getText().toString();
+        String addressLine = ((EditText) findViewById(R.id.restaurant_address_line)).getText().toString();
+        String postalCode = ((EditText) findViewById(R.id.restaurant_post_code)).getText().toString();
         String city = ((EditText) findViewById(R.id.restaurant_city)).getText().toString();
 
         // Connect to database and retrieve data
-        Connection conn = null;
-        Statement stmt = null;
+        Connection conn;
         try {
             Class.forName("org.postgresql.Driver");
             conn = java.sql.DriverManager.getConnection(DbCreds.DB_URL, DbCreds.USER, PASS);
 
             // prepared statement to avoid SQL injection
-            String sql = "INSERT INTO Restaurant (name, type, number, address, postcode, city) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Restaurant (name, type, addressLine, postalcode, city) "
+                    + "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, name);
             statement.setString(2, type);
-            statement.setString(3, streetNumber);
-            statement.setString(4, streetName);
-            statement.setString(5, postCode);
-            statement.setString(6, city);
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new restaurant has been inserted.");
-            }
+            statement.setString(3, addressLine);
+            statement.setString(4, postalCode);
+            statement.setString(5, city);
+            statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -214,10 +189,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
         private class AddRestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
-            private Context context;
-            public AddRestaurantAsyncTask(Context ctx) {
-                this.context = ctx;
-            }
+
             @Override
             protected Void doInBackground(Void... voids) {
                 saveRestaurantToDatabase();

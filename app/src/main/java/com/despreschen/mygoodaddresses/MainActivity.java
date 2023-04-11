@@ -30,15 +30,8 @@ public class MainActivity extends AppCompatActivity{
     private static String PASS;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        /*restaurantList.add(new Restaurant("Trattoria dell'Angelo", "Italienne",
-                "6", "avenue Rapp", "75007", "Paris", R.drawable.ic_restaurant_plate));
-        restaurantList.add(new Restaurant("Au bon couscous", "Marocaine",
-                "7", "rue Xavier Privas", "75005", "Paris", R.drawable.ic_restaurant_plate));*/
-
+    protected void onResume() {
+        super.onResume();
         // Read the config file
         InputStream inputStream = getResources().openRawResource(R.raw.config);
 
@@ -54,6 +47,15 @@ public class MainActivity extends AppCompatActivity{
 
         RestaurantAsyncTask task = new RestaurantAsyncTask();
         task.execute();
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
 
 
         RecyclerView recyclerView = findViewById(R.id.restaurant_list);
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity{
         Connection conn = null;
         Statement stmt = null;
         try {
+
             Class.forName("org.postgresql.Driver");
             conn = java.sql.DriverManager.getConnection(DbCreds.DB_URL, DbCreds.USER, PASS);
             stmt = conn.createStatement();
@@ -110,13 +113,11 @@ public class MainActivity extends AppCompatActivity{
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Log.d("resto", name);
                 String type = rs.getString("type");
-                String number = rs.getString("number");
-                String address = rs.getString("address");
-                String postCode = rs.getString("postcode");
+                String addressLine = rs.getString("addressLine");
+                String postalCode = rs.getString("postalcode");
                 String city = rs.getString("city");
-                Restaurant restaurant = new Restaurant(id, name, type, number, address, postCode, city);
+                Restaurant restaurant = new Restaurant(id, name, type,  addressLine, postalCode, city);
                 restaurantList.add(restaurant);
             }
         } catch (Exception e) {
