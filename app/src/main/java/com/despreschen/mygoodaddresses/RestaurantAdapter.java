@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         holder.itemView.setOnClickListener(v -> {
             // log the name of the restaurant
+            Toast.makeText(mContext, R.string.loading_map, Toast.LENGTH_SHORT).show();
             Log.d("Restaurant", "Clicked restaurant: " + restaurant.getName());
             Intent i = new Intent(mContext, RestaurantLocationActivity.class);
             i.putExtra("name", restaurant.getName());

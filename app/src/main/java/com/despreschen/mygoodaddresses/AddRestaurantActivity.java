@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +57,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(view -> {
+            Toast.makeText(this, R.string.added_redirect, Toast.LENGTH_SHORT).show();
             AddRestaurantAsyncTask task = new AddRestaurantAsyncTask(this);
             task.execute();
         });

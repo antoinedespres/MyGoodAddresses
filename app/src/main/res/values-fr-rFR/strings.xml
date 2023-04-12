@@ -13,4 +13,6 @@
     <string name="fetching_restaurants">Récupération des restaurants...</string>
     <string name="use_my_location">Utiliser ma position</string>
     <string name="save">Enregistrer</string>
+    <string name="loading_map">Chargement de la carte...</string>
+    <string name="added_redirect">Restaurant ajouté. Redirection...</string>
 </resources>
