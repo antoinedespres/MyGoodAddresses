@@ -16,9 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_image"
-        android:hint="Name"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
+        android:hint="@string/name"
+        android:padding="16dp" />
 
     <EditText
         android:id="@+id/restaurant_type"
@@ -26,25 +25,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_name"
         android:hint="@string/type"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
+        android:padding="16dp" />
 
-    <ImageView
-        android:id="@+id/use_location_icon"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/use_location_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/restaurant_type"
-        android:layout_weight="1"
+        android:drawableLeft="@drawable/baseline_location_on_24"
+        android:text="@string/use_my_location"
         app:srcCompat="@drawable/baseline_location_on_24"/>
 
     <EditText
         android:id="@+id/restaurant_address_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/use_location_icon"
+        android:layout_below="@id/use_location_button"
         android:hint="@string/street"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
+        android:padding="16dp" />
 
     <EditText
         android:id="@+id/restaurant_post_code"
@@ -52,8 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_address_line"
         android:hint="@string/post_code"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
+        android:padding="16dp" />
 
     <EditText
         android:id="@+id/restaurant_city"
@@ -61,16 +58,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_post_code"
         android:hint="@string/city"
-        android:padding="16dp"
-        android:textColorHint="@color/black" />
+        android:padding="16dp" />
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_city"
-        android:text="Save"
+        android:text="@string/save"
         android:textColor="@color/white"
-        android:background="@color/black"
         android:padding="16dp" />
 </RelativeLayout>

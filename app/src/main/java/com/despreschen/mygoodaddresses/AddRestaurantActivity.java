@@ -62,8 +62,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        ImageView useLocationIcon = findViewById(R.id.use_location_icon);
-        useLocationIcon.setOnClickListener(v -> {
+        Button useLocationButton = findViewById(R.id.use_location_button);
+        useLocationButton.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
@@ -159,7 +159,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
         }
     }
 
-
     public void saveRestaurantToDatabase() {
 
         String name = ((EditText) findViewById(R.id.restaurant_name)).getText().toString();
@@ -190,22 +189,22 @@ public class AddRestaurantActivity extends AppCompatActivity {
         }
     }
 
-        private class AddRestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
-            private Context context;
+    private class AddRestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
+        private Context context;
 
-            public AddRestaurantAsyncTask(Context ctx) {
-                this.context = ctx;
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                saveRestaurantToDatabase();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void voids) {
-                startActivity(new Intent(context, MainActivity.class));
-            }
+        public AddRestaurantAsyncTask(Context ctx) {
+            this.context = ctx;
         }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            saveRestaurantToDatabase();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voids) {
+            startActivity(new Intent(context, MainActivity.class));
+        }
+    }
 }

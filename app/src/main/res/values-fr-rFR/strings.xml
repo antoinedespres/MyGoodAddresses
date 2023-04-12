@@ -4,11 +4,13 @@
     <string name="name">Nom</string>
     <string name="type">Type/origine</string>
     <string name="number">Numéro</string>
-    <string name="street">Nom de la voie</string>
+    <string name="street">Adresse</string>
     <string name="post_code">Code postal</string>
     <string name="city">Paris</string>
     <string name="welcome">Bienvenue !</string>
     <string name="app_description">Cette application vous permet de créer une liste de vos restaurants préférés et les voir sur une carte. Vous pouvez ajouter une image de chaque adresse et utiliser le GPS pour ajouter un restaurant à votre emplacement.</string>
     <string name="close">Fermer</string>
     <string name="fetching_restaurants">Récupération des restaurants...</string>
+    <string name="use_my_location">Utiliser ma position</string>
+    <string name="save">Enregistrer</string>
 </resources>
