@@ -1,6 +1,7 @@
 package com.despreschen.mygoodaddresses;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -55,7 +56,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(view -> {
-            AddRestaurantAsyncTask task = new AddRestaurantAsyncTask();
+            AddRestaurantAsyncTask task = new AddRestaurantAsyncTask(this);
             task.execute();
         });
 
@@ -72,9 +73,11 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 getLocation();
             }
         });
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         InputStream inputStream = getResources().openRawResource(R.raw.config);
 
         Properties properties = new Properties();
@@ -165,7 +168,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
         String postalCode = ((EditText) findViewById(R.id.restaurant_post_code)).getText().toString();
         String city = ((EditText) findViewById(R.id.restaurant_city)).getText().toString();
 
-        // Connect to database and retrieve data
         Connection conn;
         try {
             Class.forName("org.postgresql.Driver");
@@ -189,11 +191,21 @@ public class AddRestaurantActivity extends AppCompatActivity {
     }
 
         private class AddRestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
+            private Context context;
+
+            public AddRestaurantAsyncTask(Context ctx) {
+                this.context = ctx;
+            }
 
             @Override
             protected Void doInBackground(Void... voids) {
                 saveRestaurantToDatabase();
                 return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void voids) {
+                startActivity(new Intent(context, MainActivity.class));
             }
         }
 }

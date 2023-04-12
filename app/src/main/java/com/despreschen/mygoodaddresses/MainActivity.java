@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,9 +31,15 @@ public class MainActivity extends AppCompatActivity{
     private static String PASS;
 
     @Override
+    protected void onStart() {
+
+        super.onStart();
+        Toast.makeText(this, R.string.fetching_restaurants, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        // Read the config file
         InputStream inputStream = getResources().openRawResource(R.raw.config);
 
         Properties properties = new Properties();
@@ -43,11 +50,8 @@ public class MainActivity extends AppCompatActivity{
         }
 
         PASS = properties.getProperty("database_password");
-
-
         RestaurantAsyncTask task = new RestaurantAsyncTask();
         task.execute();
-
     }
 
     @Override
@@ -55,12 +59,9 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
+        restaurantList.clear();
 
         RecyclerView recyclerView = findViewById(R.id.restaurant_list);
-        RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantList);
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         SharedPreferences prefs = getSharedPreferences("my_good_addresses", Context.MODE_PRIVATE);
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public static void getRestaurantsFromDatabase() {
-
+        restaurantList.clear();
         // Connect to database and retrieve data
         Connection conn = null;
         Statement stmt = null;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity{
         protected void onPostExecute(List<Restaurant> restaurantList) {
             if (restaurantList != null) {
                 RecyclerView recyclerView = findViewById(R.id.restaurant_list);
-                RestaurantAdapter adapter = new RestaurantAdapter(MainActivity.this, restaurantList);
+                RestaurantAdapter adapter = new RestaurantAdapter(MainActivity.this, restaurantList, PASS);
                 recyclerView.setAdapter(adapter);
             }
         }

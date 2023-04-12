@@ -10,4 +10,5 @@
     <string name="welcome">Welcome!</string>
     <string name="app_description">This application allows you to create a list of your favorite restaurants and to view them on a map. You can add a picture for each address and use GPS to add a restaurant at your location.</string>
     <string name="close">Close</string>
+    <string name="fetching_restaurants">Fetching restaurants...</string>
 </resources>

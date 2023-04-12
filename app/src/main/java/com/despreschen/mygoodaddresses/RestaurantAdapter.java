@@ -2,6 +2,7 @@ package com.despreschen.mygoodaddresses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     private static List<Restaurant> mRestaurantList;
     private static Context mContext;
+    private static String PASS;
 
-    public RestaurantAdapter(Context ctx, List<Restaurant> restaurantList) {
+    public RestaurantAdapter(Context ctx, List<Restaurant> restaurantList, String dbPassword) {
         mRestaurantList = restaurantList;
         mContext = ctx;
+        PASS = dbPassword;
     }
 
     @NonNull
@@ -34,6 +40,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant restaurant = mRestaurantList.get(position);
+        holder.restaurantIdTextView.setText(String.valueOf(restaurant.getId()));
         holder.restaurantNameTextView.setText(restaurant.getName());
         holder.restaurantTypeTextView.setText(restaurant.getType());
         holder.restaurantAddressTextView.setText(restaurant.getAddressLine());
@@ -56,6 +63,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     public class RestaurantViewHolder extends RecyclerView.ViewHolder {
+        private TextView restaurantIdTextView;
         private TextView restaurantNameTextView;
         private TextView restaurantTypeTextView;
         private TextView restaurantAddressTextView;
@@ -65,6 +73,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         public RestaurantViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            restaurantIdTextView = itemView.findViewById(R.id.restaurant_id);
             restaurantNameTextView = itemView.findViewById(R.id.restaurant_name);
             restaurantTypeTextView = itemView.findViewById(R.id.restaurant_type);
             restaurantAddressTextView = itemView.findViewById(R.id.restaurant_address);
@@ -73,10 +82,39 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             deleteIconImageView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
+                    RemoveRestaurantAsyncTask task = new RemoveRestaurantAsyncTask();
+                    task.execute(Integer.parseInt(restaurantIdTextView.getText().toString()));
                     mRestaurantList.remove(position);
                     notifyItemRemoved(position);
                 }
             });
+        }
+    }
+
+    public void removeRestaurantFromDatabase(Integer id) {
+        Connection conn;
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = java.sql.DriverManager.getConnection(DbCreds.DB_URL, DbCreds.USER, PASS);
+
+            // prepared statement to avoid SQL injection
+            String sql = "DELETE FROM Restaurant WHERE Id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private class RemoveRestaurantAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... ids) {
+            removeRestaurantFromDatabase(ids[0]);
+            return null;
         }
     }
 }

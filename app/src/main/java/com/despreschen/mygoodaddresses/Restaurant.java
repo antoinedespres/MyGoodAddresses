@@ -10,17 +10,8 @@ public class Restaurant {
     private String city;
     private int imageResourceId;
 
-    public Restaurant(String name, String type, String number, String addressLine, String postalCode, String city, int imageResourceId) {
-        this.id = 1;
-        this.name = name;
-        this.type = type;
-        this.addressLine = addressLine;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.imageResourceId = imageResourceId;
-    }
-
     public Restaurant(int id, String name, String type, String addressLine, String postalCode, String city) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.addressLine = addressLine;
@@ -28,6 +19,10 @@ public class Restaurant {
         this.city = city;
         this.imageResourceId = R.drawable.ic_restaurant_plate;
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
         return name;
