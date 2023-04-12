@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity{
         RecyclerView recyclerView = findViewById(R.id.restaurant_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // internal storage (SharedPreferences)
         SharedPreferences prefs = getSharedPreferences("my_good_addresses", Context.MODE_PRIVATE);
         if (prefs.getBoolean("isFirstStart", true)) {
             showDialog();
@@ -126,13 +127,14 @@ public class MainActivity extends AppCompatActivity{
             try {
                 if (stmt != null)
                     stmt.close();
-            } catch (SQLException se2) {
+            } catch (SQLException se) {
+                se.printStackTrace();
             }
             try {
                 if (conn != null)
                     conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
+            } catch (SQLException se2) {
+                se2.printStackTrace();
             }
         }
     }
