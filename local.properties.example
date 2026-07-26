@@ -5,5 +5,11 @@
 sdk.dir=/Users/<you>/Library/Android/sdk
 
 # Google Maps SDK for Android key: https://console.cloud.google.com/apis/credentials
-# Without one the app builds and runs, but the map renders blank.
+# Bring your own — see the README. Without one the app still builds and every
+# screen works; only the map renders blank.
+#
+# Restrict the key to the package com.despreschen.mygoodaddresses plus your
+# signing certificate's SHA-1, and to the Maps SDK for Android alone. A
+# client-side key is readable by anyone holding the APK, so those restrictions
+# are what limit the damage, not secrecy.
 MAPS_API_KEY=your_api_key_here
