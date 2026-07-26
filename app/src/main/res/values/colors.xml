@@ -13,4 +13,7 @@
     <color name="apple_green">#FF7CB518</color>
     <color name="avocado">#FF5C8001</color>
     <color name="xanthous">#FFFBB02D</color>
+
+    <!-- Overridden in values-night to match the Compose surface. -->
+    <color name="window_background">#FFFFFBFF</color>
 </resources>

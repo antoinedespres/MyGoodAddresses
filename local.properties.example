@@ -1,0 +1,9 @@
+# Copy this file to `local.properties` and fill in your own values.
+# `local.properties` is git-ignored and must never be committed.
+
+# Path to your Android SDK (Android Studio usually writes this for you).
+sdk.dir=/Users/<you>/Library/Android/sdk
+
+# Google Maps SDK for Android key: https://console.cloud.google.com/apis/credentials
+# Without one the app builds and runs, but the map renders blank.
+MAPS_API_KEY=your_api_key_here

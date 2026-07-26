@@ -1,18 +1,32 @@
 <resources>
     <string name="app_name" translatable="false">MyGoodAddresses</string>
+
+    <!-- List -->
     <string name="add_restaurant">Add restaurant</string>
-    <string name="name">Name</string>
-    <string name="type">Type/origin</string>
-    <string name="number">Number</string>
-    <string name="street">Address line</string>
-    <string name="post_code">Postal code</string>
+    <string name="empty_title">No addresses yet</string>
+    <string name="empty_body">Add a restaurant to see it here and on the map.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_named">Delete %1$s</string>
+    <string name="delete_restaurant_title">Delete this restaurant?</string>
+    <string name="delete_restaurant_message">%1$s will be removed from your list.</string>
+
+    <!-- Add -->
+    <string name="back">Back</string>
+    <string name="restaurant_name">Name</string>
+    <string name="restaurant_type">Type / origin</string>
+    <string name="address_line">Address</string>
+    <string name="postal_code">Postal code</string>
     <string name="city">City</string>
-    <string name="welcome">Welcome!</string>
-    <string name="app_description">This application allows you to create a list of your favorite restaurants and to view them on a map. You can add a picture for each address and use GPS to add a restaurant at your location.</string>
-    <string name="close">Close</string>
-    <string name="fetching_restaurants">Fetching restaurants...</string>
     <string name="use_my_location">Use my location</string>
     <string name="save">Save</string>
-    <string name="loading_map">Loading map...</string>
-    <string name="added_redirect">Restaurant added. Redirecting...</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="restaurant_photo">Photo of the restaurant</string>
+    <string name="location_permission_needed">Location permission is needed to fill in the address.</string>
+    <string name="location_no_fix">Could not determine your location.</string>
+    <string name="location_no_address">No address found for your location.</string>
+
+    <!-- Map -->
+    <string name="map">Map</string>
+    <string name="address_not_found">This address could not be found on the map.</string>
 </resources>

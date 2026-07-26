@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- List -->
     <string name="add_restaurant">Ajouter un restaurant</string>
-    <string name="name">Nom</string>
-    <string name="type">Type/origine</string>
-    <string name="number">Numéro</string>
-    <string name="street">Adresse</string>
-    <string name="post_code">Code postal</string>
-    <string name="city">Paris</string>
-    <string name="welcome">Bienvenue !</string>
-    <string name="app_description">Cette application vous permet de créer une liste de vos restaurants préférés et les voir sur une carte. Vous pouvez ajouter une image de chaque adresse et utiliser le GPS pour ajouter un restaurant à votre emplacement.</string>
-    <string name="close">Fermer</string>
-    <string name="fetching_restaurants">Récupération des restaurants...</string>
+    <string name="empty_title">Aucune adresse</string>
+    <string name="empty_body">Ajoutez un restaurant pour le voir ici et sur la carte.</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="delete_named">Supprimer %1$s</string>
+    <string name="delete_restaurant_title">Supprimer ce restaurant ?</string>
+    <string name="delete_restaurant_message">%1$s sera retiré de votre liste.</string>
+
+    <!-- Add -->
+    <string name="back">Retour</string>
+    <string name="restaurant_name">Nom</string>
+    <string name="restaurant_type">Type / origine</string>
+    <string name="address_line">Adresse</string>
+    <string name="postal_code">Code postal</string>
+    <!-- Previously "Paris": the label had been translated as if it were a value. -->
+    <string name="city">Ville</string>
     <string name="use_my_location">Utiliser ma position</string>
     <string name="save">Enregistrer</string>
-    <string name="loading_map">Chargement de la carte...</string>
-    <string name="added_redirect">Restaurant ajouté. Redirection...</string>
+    <string name="take_photo">Prendre une photo</string>
+    <string name="restaurant_photo">Photo du restaurant</string>
+    <string name="location_permission_needed">L\'autorisation de localisation est nécessaire pour remplir l\'adresse.</string>
+    <string name="location_no_fix">Impossible de déterminer votre position.</string>
+    <string name="location_no_address">Aucune adresse trouvée pour votre position.</string>
+
+    <!-- Map -->
+    <string name="map">Carte</string>
+    <string name="address_not_found">Cette adresse est introuvable sur la carte.</string>
 </resources>
